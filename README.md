@@ -1,4 +1,4 @@
-Base Repository: https://github.com/fcwu/docker-ubuntu-vnc-desktop
+Base Repository: https://github.com/fcwu/docker-ubuntu-vnc-desktop focal-lxqt branch
 
 ## VNC docker image template
 
