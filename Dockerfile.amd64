@@ -13,9 +13,9 @@ RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirr
 
 # built-in packages
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt update \
+RUN apt update --fix-missing \
     && apt install -y --no-install-recommends software-properties-common curl apache2-utils \
-    && apt update \
+    && apt update --fix-missing \
     && apt install -y --no-install-recommends --allow-unauthenticated \
         supervisor nginx sudo net-tools zenity xz-utils \
         dbus-x11 x11-utils alsa-utils \
@@ -24,7 +24,7 @@ RUN apt update \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 # install debs error if combine together
-RUN apt update \
+RUN apt update --fix-missing \
     && apt install -y --no-install-recommends --allow-unauthenticated \
         xvfb x11vnc \
         vim-tiny firefox ttf-ubuntu-font-family ttf-wqy-zenhei  \
@@ -33,7 +33,7 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/*
  
 
-RUN apt update \
+RUN apt update --fix-missing \
     && apt install -y gpg-agent \
     && curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && (dpkg -i ./google-chrome-stable_current_amd64.deb || apt-get install -fy) \
@@ -41,7 +41,7 @@ RUN apt update \
     && rm google-chrome-stable_current_amd64.deb \
     && rm -rf /var/lib/apt/lists/*
 
-RUN apt clean && apt update \
+RUN apt clean && apt update --fix-missing \
     && apt install -y --no-install-recommends --allow-unauthenticated \
         lxqt openbox lxqt-themes \
     && apt autoclean -y \
@@ -57,7 +57,7 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-amd64
 RUN chmod +x /bin/tini
 
 # ffmpeg
-RUN apt update \
+RUN apt update --fix-missing \
     && apt install -y --no-install-recommends --allow-unauthenticated \
         ffmpeg \
     && rm -rf /var/lib/apt/lists/* \
@@ -66,7 +66,7 @@ RUN apt update \
 
 # python library
 COPY rootfs/usr/local/lib/web/backend/requirements.txt /tmp/
-RUN apt-get update \
+RUN apt-get update --fix-missing \
     && dpkg-query -W -f='${Package}\n' > /tmp/a.txt \
     && apt-get install -y build-essential \
 	&& pip3 install setuptools wheel && pip3 install -r /tmp/requirements.txt \
@@ -89,7 +89,7 @@ FROM ubuntu:20.04 as builder
 RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
 
 
-RUN apt-get update \
+RUN apt-get update --fix-missing \
     && apt-get install -y --no-install-recommends curl ca-certificates gnupg patch
 
 # nodejs
@@ -99,7 +99,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
 # yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-    && apt-get update \
+    && apt-get update --fix-missing \
     && apt-get install -y yarn
 
 # build frontend
