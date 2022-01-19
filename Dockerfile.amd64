@@ -8,7 +8,7 @@ FROM ${BASE_IMAGE} as system
 
 
 
-RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
+# RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
 
 
 # built-in packages
@@ -86,7 +86,7 @@ RUN cp -R /usr/share/icons/ubuntu-mono-light/* /usr/share/icons/hicolor/
 FROM ubuntu:20.04 as builder
 
 
-RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
+# RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
 
 
 RUN apt-get update --fix-missing \
